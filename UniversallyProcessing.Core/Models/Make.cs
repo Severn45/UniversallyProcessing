@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace UniversallyProcessing.Core.Models
+{
+    public class Make
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}

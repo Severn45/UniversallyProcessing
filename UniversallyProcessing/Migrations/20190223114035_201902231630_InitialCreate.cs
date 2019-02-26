@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UniversallyProcessing.Api.Migrations
 {
@@ -6,44 +7,122 @@ namespace UniversallyProcessing.Api.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
             //migrationBuilder.CreateTable(
-            //    name: "AspNetUsers",
+            //    name: "AspNetRoles",
             //    columns: table => new
             //    {
             //        Id = table.Column<string>(nullable: false),
-            //        UserName = table.Column<string>(maxLength: 256, nullable: true),
-            //        NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-            //        Email = table.Column<string>(maxLength: 256, nullable: true),
-            //        NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-            //        EmailConfirmed = table.Column<bool>(nullable: false),
-            //        PasswordHash = table.Column<string>(nullable: true),
-            //        SecurityStamp = table.Column<string>(nullable: true),
-            //        ConcurrencyStamp = table.Column<string>(nullable: true),
-            //        PhoneNumber = table.Column<string>(nullable: true),
-            //        PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-            //        TwoFactorEnabled = table.Column<bool>(nullable: false),
-            //        LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-            //        LockoutEnabled = table.Column<bool>(nullable: false),
-            //        AccessFailedCount = table.Column<int>(nullable: false)
+            //        Name = table.Column<string>(maxLength: 256, nullable: true),
+            //        NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+            //        ConcurrencyStamp = table.Column<string>(nullable: true)
             //    },
             //    constraints: table =>
             //    {
-            //        table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+            //        table.PrimaryKey("PK_AspNetRoles", x => x.Id);
             //    });
+
+            migrationBuilder.CreateTable(
+          name: "CarMakes",
+          columns: table => new
+          {
+              Id = table.Column<int>(nullable: false)
+                  .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+              Name = table.Column<string>(maxLength: 256, nullable: true),
+              NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+              ConcurrencyStamp = table.Column<string>(nullable: true)
+          },
+          constraints: table =>
+          {
+              table.PrimaryKey("PK_CarMakes", x => x.Id);
+          });
+
+            migrationBuilder.CreateTable(
+                name: "CarModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    MakeId = table.Column<int>(nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarModels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarModels_CarMakes_MakeId",
+                        column: x => x.MakeId,
+                        principalTable: "CarMakes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CarCities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarCities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CarRecords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Make = table.Column<string>(maxLength: 256, nullable: true),
+                    Model = table.Column<string>(maxLength: 256, nullable: true),
+                    Year = table.Column<string>(nullable: true),
+                    EngineType = table.Column<string>(nullable: true),
+                    EngineSize = table.Column<string>(nullable: true),
+                    BodyType = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(nullable: true),
+                    Picture = table.Column<string>(nullable: true),
+                    MakeId = table.Column<int>(nullable: false),
+                    ModelId = table.Column<int>(nullable: false),
+                    CityId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarRecords_CarMakes_MakeId",
+                        column: x => x.MakeId,
+                        principalTable: "CarMakes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    //table.ForeignKey(
+                    //    name: "FK_CarRecords_CarModels_ModelId",
+                    //    column: x => x.ModelId,
+                    //    principalTable: "CarModels",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CarRecords_CarCities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "CarCities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
 
             //migrationBuilder.CreateTable(
             //    name: "AspNetRoleClaims",
